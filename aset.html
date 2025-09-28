@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>79 - General Affairs</title>
+  <link rel="icon" href="./ga-logo.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    body {
+      font-family: 'Poppins', sans-serif;
+      padding: 40px;
+      background-color: white;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .geometric-shape {
+      position: absolute;
+      opacity: 0.6;
+      z-index: -1;
+    }
+
+    .orange-circle {
+      width: 150px;
+      height: 150px;
+      background-color: #ff7300;
+      border-radius: 50%;
+      top: 10%;
+      left: 10%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .blue-triangle {
+      width: 0;
+      height: 0;
+      border-left: 75px solid transparent;
+      border-right: 75px solid transparent;
+      border-bottom: 130px solid #2f81df;
+      top: 60%;
+      right: 15%;
+      animation: rotate 8s linear infinite;
+    }
+
+    .blue-square {
+      width: 100px;
+      height: 100px;
+      background-color: #4169E1;
+      top: 20%;
+      right: 5%;
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    h2 {
+      color: #333;
+      text-align: center;
+      animation: fadeInDown 1s ease-out;
+      margin-bottom: 20px;
+    }
+
+    .kotak-aset {
+      border: 2px solid #ddd;
+      padding: 20px;
+      width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: #f9f9f9;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeInUp 1s ease-out 0.5s both;
+      margin: 0 auto;
+    }
+
+    .kotak-aset:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    p {
+      margin: 10px 0;
+      animation: fadeInLeft 1s ease-out 1s both;
+    }
+
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .loading {
+      text-align: center;
+      color: #666;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 20px;
+      animation: fadeInDown 1s ease-out 0.2s both;
+    }
+
+    .logo-container img {
+      width: 140px;
+      height: auto;
+      max-width: 100%;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="geometric-shape orange-circle"></div>
+  <div class="geometric-shape blue-triangle"></div>
+  <div class="geometric-shape blue-square"></div>
+
+  <div class="logo-container">
+    <img src="./ga-logo.png" alt="Logo GA" />
+  </div>
+
+  <h2 style="color: #4169E1;">Informasi Aset</h2>
+  <div class="kotak-aset" id="info-aset">
+    <p class="loading">Sedang memuat...</p>
+  </div>
+
+  <script>
+    var dataAset = {
+      "1": { nama: "Laptop Dell", nomor: "A001" },
+      "2": { nama: "Printer Epson", nomor: "A002" },
+      "3": { nama: "", nomor: "A003" }
+    };
+
+    // Data mentah
+    var rawData = `
+    12-08102018-001	Dell Inc.
+    12-08102018-002	Dell Inc. 0CPWYR
+    12-08102018-001	Dell Inc.
+    12-08102018-002	Dell Inc. 0CPWYR
+    12-08102018-003	Dell E6430
+    12-08102018-004	ASUS X442UQR
+    12-08102018-005	ASUSTech
+    12-08102018-006	Dell Latitude E6430
+    12-08102018-007	Dell Inc 0CPWYR
+    12-08102018-009	HP AMD A8
+    12-08102018-010	ASUSTech X442UQR
+    12-08102018-011	Dell Latitude E5430
+    12-08102018-012	Dell Inc.
+    12-08102018-013	Mac OS Mojave
+    12-08102018-014	HP 1000 Notebook PC
+    12-08102018-015	HP G4-2308TX
+    12-08102018-016	Dell Latitude E5430
+    12-08102018-017	Lenovo LNVNB161216
+    12-08102018-018	ASUSTech
+    12-08102018-019	Dell Inc.
+    12-08102018-020	Dell Inc.
+    12-08102018-021	Dell Latitude E5430
+    12-08102018-022	Dell Inc.
+    12-08102018-023	Dell Inc.
+    12-08012019-025	Lenovo Thinkpad T430
+    12-08102018-024	Dell E6430 C
+    12-06022019-026	Lenovo Thinkpad T430
+    12-11022019-028	Macbook Air 2017
+    12-11022019-029	Macbook Pro 2017
+    12-04032019-030	Dell E6430
+    12-11032019-031	HP Probook 640
+    12-11032019-032	HP Probook 640
+    12-11032019-033	HP Folio 9480m
+    12-11032019-034	HP Folio 9480m
+    12-11032019-035	HP Folio 9480m
+    12-15032019-036	Dell E6440
+    12-15032019-037	Lenovo Thinkpad T430
+    12-15032019-038	Dell E6440
+    12-22032019-039	Dell E7740
+    12-22032019-040	Dell E7740
+    12-27032019-041	Dell Latitude E7440
+    12-09052019-042	HP
+    12-22082019-043	
+    12-19112019-044	Lenovo T430
+    12-11022020-045	Dell E6530
+    12-11022020-046	HP
+    12-11022020-047	Lenovo T430
+    12-15032020-048	Lenovo T440p
+    12-26032020-049	Lenovo T440s
+    12-06032020-050	Dell E5440
+    12-15032020-051	Lenovo L440
+    12-26032020-052	Dell E7440
+    12-18042020-052	Lenovo T440p
+    12-18042020-053	Dell E6440
+    12-15062020-054	Lenovo T450
+    12-01052020-055	Dell Latitude E6440
+    12-01052020-056	Dell Latitude E6440
+    12-26062020-057	Macbook Air 2017
+    12-13072020-060	Lenovo L440
+    12-13072020-061	Lenovo L440
+    12-13072020-062	Dell Latitude E5450
+    12-13072020-063	Lenovo L440
+    12-13072020-064	Dell Latitude E5450
+    12-16062021-064	Lenovo V14 ARE
+    12-26062021-065	Acer Travel Mate P248-M
+    12-08072021-066	Toshiba Portege Z30-C
+    12-03112021-067	Macbook Air 2020
+    12-03112021-068	Asus X456URK
+    12-03112021-069	Lenovo Idea Pad 310
+    12-10112021-070	Macbook Air 2020
+    12-12112021-071	Macbook Air 2020
+    12-31122021-072	HP Elitebook 745 G3
+    12-05022022-073	Lenovo T460s
+    12-07022022-074	Lenovo T450
+    12-06042022-075	Acer Aspire 5
+    12-11022020-076	Lenovo T430
+    12-14092021-077	Lenovo T430
+    12-18052022-078	Asus A416EPO-FHD551
+    12-08072022-079	Dell Latitude 7490
+    12-18072022-079	MSI Modern Book 14 B5M
+    12-06082022-080	Acer Aspire 5 Slim A514-54-56MU
+    12-29092022-081	Acer Aspire 5 Slim A514
+    12-01012020-082	Dell Latitude E7440
+    12-01112022-084	Acer Aspire 5 Slim A514
+    12-01122022-085	Acer Aspire 5 Slim A514
+    12-16122022-086	Macbook Air 2020 Silver
+    12-01012023-087	Acer Aspire 5 Slim A514
+    12-01012023-088	Macbook Air 2020 Grey
+    12-27012023-089	Acer Aspire 5 Slim A514
+    12-09022023-090	Acer Aspire 5 Slim A514
+    12-12022023-091	Acer Aspire 5 Slim A514
+    12-01032023-092	Macbook Air 2020 Silver
+    12-01032023-093	Macbook Air 2020 Silver
+    12-14032023-094	Acer NITRO 5 AN515
+    12-28042023-095	Acer Aspire 5 Slim A514
+    12-05052023-096	Macbook Air 2020 Silver
+    12-05052023-097	Macbook Air 2020 Silver
+    12-08052023-098	Macbook Air 2020 Silver
+    12-29052023-099	Dell Latitude 7400
+    12-29052023-100	Dell Latitude 7400
+    12-07062023-101	Macbook Air 2020 Grey
+    12-07062023-102	Macbook Air 2020 Silver
+    12-07062023-103	Macbook Air 2020 Silver
+    12-02072023-104	Macbook Air 2020 SpaceGrey
+    12-02072023-105	Macbook Air 2020 SpaceGrey
+    12-06072023-106	Macbook Air 2020 Silver
+    12-31072023-107	Macbook Air 2020 SpaceGrey
+    12-31072023-108	Macbook Air 2020 SpaceGrey
+    12-02082023-109	Macbook Air 2020 SpaceGrey
+    12-02082023-110	Macbook Air 2020 SpaceGrey
+    12-02092023-111	Macbook Air 2020 SpaceGrey
+    12-07092023-112	Macbook Air 2020 Silver
+    12-07092023-113	Macbook Air 2020 Silver
+    12-26092023-114	Dell Latitude 7490
+    12-06102023-115	Macbook Air 2020 SpaceGrey
+    12-07102023-116	Macbook Air 2020 SpaceGrey
+    12-12102023-117	Dell Latitude 7400
+    12-12102023-118	Dell Latitude 7400
+    12-14112023-119	Acer Aspire Vero AV14
+    12-27122023-120	Lenovo T480s
+    12-25012024-121	Lenovo T480
+    12-30012024-122	Lenovo T480
+    12-02022024-123	Acer Nitro V15
+    12-07022024-124	Lenovo T480
+    12-15022024-125	Lenovo T480
+    12-07032024-126	Lenovo T480
+    12-20082024-127	Acer Aspire 5 Slim A514-56P
+    12-29082024-128	Acer Aspire 5 Slim A514-56P
+    12-04092024-129	Macbook Pro M1 Pro 2021
+    12-28092024-130	Macbook Pro M1 Pro 2021
+    12-12122024-131	Asus Vivobook 14 A1404ZA
+    12-29122024-132	Asus Vivobook 14 A1404ZA
+    12-23122024-133	Asus Vivobook 14 A1404ZA
+    12-01012025-134	Lenovo Thinkpad T480
+    12-01012025-135	Lenovo Thinkpad T480
+    12-20012025-136	Lenovo Thinkpad T480
+    12-20012025-137	Lenovo Thinkpad T480
+    12-12022025-138	HP Elitebook 745 G6
+    13-07042025-139	HP 15-fd0888TX
+    13-11042025-140	HP 15-fd0095wm
+    12-25082025-141	Dell Latitude 7310
+    12-27082025-142	Lenovo Thinkpad X370 Yoga
+    12-20092025-143	Acer TM P449
+    12-20092025-144	Acer TM P449
+    GA-30122024-001	Conference CAM
+    19-28062024-002	Printer Epson L3250
+    25-21052024-001	Realme Note 50
+    25-21052024-002	Xiaomi Redmi 12
+    25-21052024-003	Apple iPhone 11
+    25-16022025-004	Samsung A06
+    25-16042025-005	Xiaomi Redmi 14C
+    25-10082025-006	Oppo A5 Pro 5G
+    25-10082025-007	iPhone 14
+    13-08102018-001	Gigabyte GA-MA78GM U52H
+    13-08102018-002	OEM
+    13-08102018-003	Gigabyte H81M-DS2
+    13-08102018-004	HP Proliant M2 110 Gen 9
+    13-08102018-005	
+    13-08102018-006	Foxcon n125
+    13-06062020-065	Gigabyte Z390 Designare
+    13-06092023-007	Server HP DL360 G9 1U
+    15-23082023-001	Lemari Loker Krisbow
+    15-05092023-002	Lemari Loker Krisbow
+    15-18072023-003	Whiteboard Sakura
+    15-18072023-004	Whiteboard Sakura
+    15-18072023-005	Whiteboard Sakura
+    No Number	RAM DDR4
+    No Number  RAM DDR4 Corsair Vengenance
+    No Number  RAM DDR4 Team Elite
+    No Number  RAM DDR4 Team Elite
+    No Number  RAM DDR4 Team Elite
+    No Number  RAM DDR3L Hynix
+      RAM DDR3L Hynix
+    24-30012024-001	SSD Team Group 512GB CX2
+      RAM DDR4 Samsung
+      HDD Server HP
+      HDD Server HP
+      Seagate EXOS 7E10
+      Seagate EXOS 7E10
+      ⁠Lexar SL500
+      RAM Server HPE
+    `.trim();
+
+    var lines = rawData.split('\n');
+
+    var nextId = 4;
+
+    for (let line of lines) {
+      let [nomor, nama] = line.split('\t');
+      
+      if (!nama || nama.trim() === "") {
+        nama = "undefined";
+      }
+
+      dataAset[nextId.toString()] = {
+        nama: nama.trim(),
+        nomor: nomor.trim()
+      };
+      nextId++;
+    }
+
+    console.log(dataAset);
+
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var id = urlParams.get("id");
+
+    var tampil = document.getElementById("info-aset");
+
+    if (id in dataAset) {
+      var aset = dataAset[id];
+      tampil.innerHTML = `
+        <p><strong>Nomor Aset:</strong> ${aset.nomor}</p>
+        <p><strong>Nama Aset:</strong> ${aset.nama}</p>
+      `;
+    } else {
+      tampil.innerHTML = `<p style="color:red;">Aset tidak ditemukan.</p>`;
+    }
+
+    setTimeout(() => {
+      var loading = tampil.querySelector('.loading');
+      if (loading) loading.remove();
+    }, 500);
+  </script>
+</body>
+</html>
