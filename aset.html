@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>79 - General Affairs</title>
+  <link rel="icon" href="./ga-logo.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Poppins', sans-serif;
+      padding: 40px;
+      background-color: white;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .geometric-shape { position: absolute; opacity: 0.6; z-index: -1; }
+    .orange-circle { width: 150px; height: 150px; background-color: #ff7300; border-radius: 50%; top: 10%; left: 10%; animation: float 6s ease-in-out infinite; }
+    .blue-triangle { width: 0; height: 0; border-left: 75px solid transparent; border-right: 75px solid transparent; border-bottom: 130px solid #2f81df; top: 60%; right: 15%; animation: rotate 8s linear infinite; }
+    .blue-square { width: 100px; height: 100px; background-color: #4169E1; top: 20%; right: 5%; animation: pulse 4s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0px);} 50% { transform: translateY(-8px);} }
+    @keyframes rotate { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+    @keyframes pulse { 0%,100% { transform: scale(1);} 50% { transform: scale(1.1);} }
+    @keyframes slideInLeft {
+      0% {
+        transform: translateX(-20%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    @keyframes zoomIn {
+        0% {
+          transform: scale(0.7);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    h2 { color: #333; text-align: center; margin-bottom: 20px; }
+    .kotak-aset {
+      border: 2px solid #ddd; padding: 20px; width: 320px;
+      border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: #f9f9f9; transition: transform 0.3s, box-shadow 0.3s;
+      animation: float 5s ease-in-out infinite;
+    }
+    .kotak-aset:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+    p { margin: 10px 0; }
+    .loading { text-align: center; color: #ff7700; font-weight: 600; animation: float 1s linear infinite; }
+    .logo-container { text-align: center; margin-bottom: -10px; animation: slideInLeft 3s ease-in; }
+    .logo-container img { width: 140px; height: auto; max-width: 100%; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="geometric-shape orange-circle"></div>
+  <div class="geometric-shape blue-triangle"></div>
+  <div class="geometric-shape blue-square"></div>
+
+  <div class="logo-container">
+    <img src="./ga-logo.png" alt="Logo GA" />
+  </div>
+  
+  <center>
+    <p style="margin-bottom: 40px; font-weight: 600; max-width: 450px;">Gg. Terasana No.6A, Pasir Kaliki, Kec. Cicendo, Kota Bandung, Jawa Barat 40171</p>
+  </center>
+
+  <h2 style="color: #4169E1;">Asset Identity</h2>
+  <div class="kotak-aset" id="info-aset">
+    <p class="loading">Sedang memuat...</p>
+  </div>
+
+  <script>
+    var dataAset = {
+
+    };
+
+    var rawData = `
+    12-08102018-001/Dell Inc./LAPTOP/OS Windows 10 64 bit, CPU Core i5 3360 @ 2.90 GHz, RAM 8 Gb DDR3, MB Dell Inc, VGA HD 4000, HD 320 Gb
+    12-08102018-002/Dell Inc. 0CPWYR/LAPTOP/OS Windows 7 professional 64-Bit, CPU Intel Core i5 @ 2.90GHz, RAM 8 GB Dual-Channel DDR3 @ 797MHz, MB Dell inc. 0CPWYR, VGA Generic PnP Monitor (1600×1900@60Hz) Intel HGraphics 4000 (Dell), HDD 298GB Seagate (SATA)
+    12-08102018-003/Dell E6430/LAPTOP/OS Windows 10 64 Bit, CPU i5 Gen 2, RAM 8gb, Type Dell E6430, VGA 1,5, HD 250 gb
+    12-08102018-004/ASUS X442UQR/LAPTOP/"OS Win 10 Pro 64 bit, CPU Core i5-8250 1.60 GHz, RAM 12 GB (4GB + 8GB soldered), MB ASUS X442UQR, Type VGA UHD Grapich 620, HDD SSD 256GB, SN HAN0CV11712742D
+    12-08102018-005/ASUSTech/LAPTOP/"OS Windows 10 Pro 64 bit, CPU Intel Core i5-8250U, RAM 16 Gb DDR4 (8GB + 8GB soldered), MB ASUSTech, VGA NVIDIA GeForce, SSD 256GB + HDD 1TB
+    12-08102018-006/Dell Latitude E6430/LAPTOP/"Merk Dell, Processor Core i5 3380M, Type Latitude E6430, RAM 8x2 DDR3L, HDD SSD 256GB, Layar 14 Inch, OS Windows 10 Pro 64 bit
+    12-08102018-007/Dell Inc 0CPWYR/LAPTOP/"OS Win 7 64 bit SP1, CPU Core i5 3360 @ 2.80 GHz, RAM 8 Gb DDR3, MB Dell Inc 0CPWYR, VGA HD 4000, HD 320 Gb
+    12-08102018-009/HP AMD A8/LAPTOP/"OS Win 10 Pro 64 bit, CPU AMD A8, RAM 12 Gb, MB HP, HD 500 GB
+    12-08102018-010/ASUSTech X442UQR/LAPTOP/"OS Win 10 Pro 64 bit, CPU Core i5 1.60 GHz, RAM 12 Gb, MB ASUSTech X442UQR, Type VGA UHD Grapich 620 & Nvidia Geforce 940MX, SSD 512 GB
+    12-08102018-011/Dell Latitude E5430/LAPTOP/"Merk Dell, Type Latitude E5430, CPU Core i7 3520 2.90 GHz, RAM 8 Gb, Type VGA HD 4000, Storage SSD 180 Gb
+    12-08102018-012/Dell Inc./LAPTOP/"OS Win 7 Pro 64 bit, CPU Core i7 2.90 GHz, RAM 8 Gb, MB Dell Inc, Type VGA HD 4000, HD 180 GB SSD
+    12-08102018-013/Mac OS Mojave/LAPTOP/"OS Mac OS Mojave, CPU Core i5 1.8 up to 2.9 GHz, RAM 8 Gb, Type VGA HD 6000, HD 256 SSD
+    12-08102018-014/HP 1000 Notebook PC/LAPTOP/OS Win 10 Pro 64 Bit, CPU Core i3 2.40 GHz, RAM 8 Gb, MB HP 1000 Notebook PC, Type VGA HD 3000, HD 500 Gb
+    12-08102018-015/HP G4-2308TX/LAPTOP/OS Windows 10 Pro 64 Bit, CPU core i5, Ram 8 GB DDR 3, MB HP G4-2308TX, VGA AMD Radeon HD 7670M, HD 500GB
+    12-08102018-016/Dell Latitude E5430/LAPTOP/Merk Dell, Type Latitude E5430, RAM 8GB, HDD 500GB, Layar 14 Inch, OS Windows 10 64 Bit, Processor Intel Core i7 3520M
+    12-08102018-017/Lenovo LNVNB161216/LAPTOP/OS Win 10 64 bit, CPU AMD A4, RAM 4 Gb DDR3L, MB Lenovo LNVNB161216, Type VGA AMD Radeon R3, HD 500 Gb
+    12-08102018-018/ASUSTech/LAPTOP/OS Win 10 Pro 64 bit, CPU Core i5 1.60 GHz, RAM 8 Gb, MB ASUSTech, Type VGA UHD Grapich 620, NVIDIA GF 940MX, SSD 256 GB
+    12-08102018-019/Dell Inc./LAPTOP/OS Win 10 Pro 64 bit, CPU Core i7 2.90 GHx, RAM 8 Gb, MB Dell Inc, Type VGA , HD 500 GB
+    12-08102018-020/Dell Inc./LAPTOP/OS Win 7 Pro 64 bit, CPU Core i5 2.50 GHz, RAM 8 Gb, MB Dell Inc, Type VGA , HD 320 GB
+    12-08102018-021/Dell Latitude E5430/LAPTOP/Merk Dell, Type Latitude E5430, CPU Core i7 3520 2.90 GHz, RAM 8 Gb, Type VGA HD 4000, Storage HDD 500 Gb
+    12-08102018-022/Dell Inc./LAPTOP/OS Win 7, CPU Core i5 2.40 GHz, RAM 8 Gb, MB Dell Inc, HD 500 GB
+    12-08102018-023/Dell Inc./LAPTOP/OS Win 7, CPU Core i5 2.40 GHz, RAM 6 Gb, MB Dell Inc, HD 500 GB
+    12-08012019-025/Lenovo Thinkpad T430/LAPTOP/Merk Lenovo, Type Thinkpad T430, RAM 8GB, HDD 500GB, Layar 14 Inch, OS Windows 10 64 Bit, Procie Intel Core i 5 3320M
+    12-08102018-024/Dell E6430 C/LAPTOP/Merk Dell, Type E6430 C, RAM 12 GB, HDD 320 GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-06022019-026/Lenovo Thinkpad T430/LAPTOP/Merk Lenovo, Type Thinkpad T430, RAM 8GB, HDD 500GB, Layar 14 Inch, OS Windows 10 64 Bit, Procie Intel Core i 5 3320M
+    12-11022019-028/Macbook Air 2017/LAPTOP/Merk Apple, Type Macbook Air 2017, RAM 8GB, SSD 256GB, Layar 13 Inch, OS Mojave
+    12-11022019-029/Macbook Pro 2017/LAPTOP/Merk Apple, Type Macbook Pro 2017, RAM 8GB, SSD 256GB, Layar 12 Inch Retina, OS Mojave, SN FVFXQ8LMHV29
+    12-04032019-030/Dell E6430/LAPTOP/Merk Dell, Type E6430, RAM 8 GB, HDD 320 GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-11032019-031/HP Probook 640/LAPTOP/Merk HP, Processor Intel Core i5 Gen4, Type Probook 640, RAM 8GB, HDD 500GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-11032019-032/HP Probook 640/LAPTOP/Merk HP, Processor Intel Core i5 Gen4, Type Probook 640, RAM 16 GB (8GBx2) DDR3L, HDD 500 GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-11032019-033/HP Folio 9480m/LAPTOP/Merk HP, Type Folio 9480m, Processor Intel Core i5 Gen4, RAM 8GB, SSD 256GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-11032019-034/HP Folio 9480m/LAPTOP/Merk HP, Type Folio 9480m, Processor Intel Core i5 Gen4, RAM 8GB, HDD 180GB SSD, Layar 14 Inch, OS Windows 10 64 bit
+    12-11032019-035/HP Folio 9480m/LAPTOP/Merk HP, Type Folio 9480m, Processor Intel Core i5 Gen4, RAM 8GB, HDD 180GB SSD, Layar 14 Inch, OS Windows 10 64 bit
+    12-15032019-036/Dell E6440/LAPTOP/Merk Dell, Processor Intel Core i5 Gen4, Type E6440, RAM 12 GB, HDD 250GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-15032019-037/Lenovo Thinkpad T430/LAPTOP/Merk Lenovo, Type Thinkpad T430, Processor Intel Core i5 Gen3, RAM 8GB, HDD 500GB, Layar 14 Inch, OS Windows 10 64 Bit
+    12-15032019-038/Dell E6440/LAPTOP/Merk Dell, Processor Intel Core i5 Gen4, Type E6440, RAM 8 GB, HDD 120 GB SSD, Layar 14 Inch, OS Windows 10 64 bit, SN
+    12-22032019-039/Dell E7740/LAPTOP/Merk Dell, Processor Intel Core i5 Gen4, Type E7740, RAM 8 GB, HDD 180 GB SSD, Layar 14 Inch, OS Windows 10 64 bit
+    12-22032019-040/Dell E7740/LAPTOP/Merk Dell, Processor Intel Core i5 Gen4, Type E7740, RAM 16GB, HDD 180 GB SSD, Layar 14 Inch, OS Windows 10 64 bit
+    12-27032019-041/Dell Latitude E7440/LAPTOP/Merk Dell, Processor Core i5 4210U, Type Latitude E7440, RAM 8x2 DDR3L, HDD SSD 180GB, Layar 14 Inch, OS Windows 10 Pro 64 bit
+    12-09052019-042/HP/LAPTOP/Merk HP, Processor Intel Core i5 Gen 5, Type 840 G2, RAM 12 GB, HDD 240 GB SSD, Layar 14 Inch, OS Windows 10 64 bit
+    12-19112019-044/Lenovo T430/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 3, Type T430, RAM 8 GB, HDD 320GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-11022020-045/Dell E6530/LAPTOP/Merk Dell, Type E6530, RAM 8 GB, HDD 180 GB SSD, Layar 15,6 Inch, OS Windows 10 64 bit
+    12-11022020-046/HP/LAPTOP/Merk HP, Processor Intel Core i5 Gen 5, Type 840 G2, RAM 8 GB, HDD 320GB HDD, Layar 14 Inch, OS Windows 10 64 bit
+    12-11022020-047/Lenovo T430/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 3, Type T430, RAM 8 GB, HDD 320GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-15032020-048/Lenovo T440p/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 4, Type T440p, RAM 16 GB, SSD -- GB (No Disk), Layar 14 Inch, OS Windows 10 64 bit
+    12-26032020-049/Lenovo T440s/LAPTOP/Merk Lenovo, Processor Intel Core i7 Gen 4, Type T440s, RAM 8 GB, SSD 256 GB, Layar 14 Inch, OS Windows 10 64 bit, Touchscreen
+    12-06032020-050/Dell E5440/LAPTOP/Merk Dell, Processor Intel Core i5 Gen 4, Type E5440, RAM 8 GB, SSD 180 GB, Layar 14 Inch, OS Windows 10 64 bit, SN BG92IQ4
+    12-15032020-051/Lenovo L440/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 4, Type L440, RAM 8 GB, SSD 256 GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-26032020-052/Dell E7440/LAPTOP/Merk Dell, Processor Intel Core i7 Gen 4, Type E7440, RAM 2 x 8 GB DDR3L, SSD 512 GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-18042020-052/Lenovo T440p/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 4, Type T440p, RAM 8 GB, SSD 128 GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-18042020-053/Dell E6440/LAPTOP/Merk Dell, Processor Intel Core i5 Gen 4, Type E6440, RAM 8 GB, SSD 128 GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-15062020-054/Lenovo T450/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 5, 2.29 GHz, Type T450, RAM 8 GB, SSD 240 GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-01052020-055/Dell Latitude E6440/LAPTOP/Merk Dell, Processor Intel Core i7 4610M 3.00GHz, Type Latitude E6440, RAM 8 GB, SSD 128 GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-01052020-056/Dell Latitude E6440/LAPTOP/Merk Dell, Processor Intel Core i7 4600M 2.90GHz, Type Latitude E6440, RAM 16 GB, SSD 128 GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-26062020-057/Macbook Air 2017/LAPTOP/Merk Apple, Type Macbook Air 2017, RAM 8GB, SSD 128Gb, Layar 13 Inch, OS Catalina
+    12-13072020-060/Lenovo L440/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 4, Type L440, RAM 8 GB, 2x4GB DDR3L PC12800, HDD SSD 180 GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-13072020-061/Lenovo L440/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 4, Type L440, RAM 16 GB, 2x8GB DDR3L PC12800, SSD 250 GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-13072020-062/Dell Latitude E5450/LAPTOP/Merk Dell, Processor Intel Core i5 Gen 5, 5300U, Type Latitude E5450, RAM 16 GB, 2x8GB DDR3L PC12800, SSD 180GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-13072020-063/Lenovo L440/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 4, Type L440, RAM 8 GB, 2x4GB DDR3L PC12800, SSD 256 GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-13072020-064/Dell Latitude E5450/LAPTOP/Merk Dell, Processor Intel Core i5 Gen 5, 5300U, Type Latitude E5450, RAM 16 GB DDR3L, HDD 320GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-16062021-064/Lenovo V14 ARE/LAPTOP/Merk Lenovo, Processor AMD Ryzen 5 4500 U 6 Cores, Type V14 ARE, RAM 20GB DDR4 (16Gb 1 keping+ OB), SSD 480gb, Layar 14 Inch, OS Windows 10 Pro 64 bit
+    12-26062021-065/Acer Travel Mate P248-M/LAPTOP/Merk Acer, Processor Intel Core I5-6200U, Type Travel Mate P248-M, RAM 8 GB DDR3, SSD 256 GB, Layar 14 Inch, OS Windows 10 Pro 64 bit
+    12-08072021-066/Toshiba Portege Z30-C/LAPTOP/Merk Toshiba, Processor Intel Core i5 6300U, Type Portege Z30-C, RAM 16GB DDR3L, SSD 256GB, Layar 13Inch FHD IPS, VGA Intel HD 520
+    12-03112021-067/Macbook Air 2020/LAPTOP/Merk Apple, Processor Apple Chip M1, Type Macbook Air 2020, RAM 8GB DDR4, SSD 256GB, Layar 13Inch, VGA -
+    12-03112021-068/Asus X456URK/LAPTOP/Merk Asus, Processor Intel Core i5 Gen 7, Type X456URK, RAM 20GB DDR4 (4GB Soldered + 16GB), SSD 256GB, Layar 13Inch, VGA NVIDIA 930MX
+    12-03112021-069/Lenovo Idea Pad 310/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 7, Type Idea Pad 310, RAM 8 DDR4, SSD 256GB, Layar 13Inch, VGA NVIDIA 930MX
+    12-10112021-070/Macbook Air 2020/LAPTOP/Merk Apple, Processor Apple Chip M1, Type Macbook Air 2020, RAM 8GB DDR4, SSD 256GB, Layar 13Inch, VGA -
+    12-12112021-071/Macbook Air 2020/LAPTOP/Merk Apple, Processor Apple Chip M1, Type Macbook Air 2020, RAM 8GB DDR4, SSD 256GB, Layar 13Inch, VGA -
+    12-31122021-072/HP Elitebook 745 G3/LAPTOP/Merk hp, Processor AMD PRO A10-8700B R6, Type Elitebook 745 G3, RAM 8GB DDR3 2x8GB, Storage nvme 256GB, Layar 14 inch, VGA AMD Radeon R6
+    12-05022022-073/Lenovo T460s/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 6, Type T460s, RAM 12 DDR4 (8GB + 4GB fixed), SSD Midas Force nvme 256GB, Layar 14Inch Touchscreen
+    12-07022022-074/Lenovo T450/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 5, Type T450, RAM 16 Gb DDR3, SSD 256GB, Layar 14Inch, SN PC09H72Y
+    12-06042022-075/Acer Aspire 5/LAPTOP/Merk Acer, Processor Intel Core i5 Gen 11, Type Aspire 5, RAM 8 Gb Soldered + 8GB DDR4 3200mhz, SSD 512GB, Layar 14Inch, SN NXA27SN00614722F8D3400
+    12-11022020-076/Lenovo T430/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 3, Type T430, RAM 8 GB, HDD SSD 128GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-14092021-077/Lenovo T430/LAPTOP/Merk Lenovo, Processor Intel Core i5 Gen 3, Type T430, RAM 12 GB, HDD SSD 128GB, Layar 14 Inch, OS Windows 10 64 bit
+    12-18052022-078/Asus A416EPO-FHD551/LAPTOP/Merk Asus, Processor Intel Core i5 Gen 11, Type A416EPO-FHD551, RAM 24 GB (16GB + 8GB onboard), HDD SSD 512GB, VGA Nvidia GF MX330 2Gb, Layar 14 Inch, OS Windows 11 64 bit, SN N1N0CV21U177042
+    12-08072022-079/Dell Latitude 7490/LAPTOP/Merk Dell, Processor Intel Core i5-8350U 8CPUs, Type Latitude 7490, RAM 16 GB (8 Gb x2), HDD SSD 256GB, VGA Standar, Layar 14 Inch, OS Windows 10 64 bit, SN 810SMQ2
+    12-18072022-079/MSI Modern Book 14 B5M/LAPTOP/Merk MSI, Processor Ryzen 5 5500u, Type Modern Book 14 B5M, RAM 8GB, HDD SSD 512GB NVme, VGA Radeon, Layar 14 Inch, OS Windows 11 64 bit
+    12-06082022-080/Acer Aspire 5 Slim A514-54-56MU/LAPTOP/Merk Acer, Processor Core i5 1135G7, Type Aspire 5 Slim A514-54-56MU, RAM 4 Gb Soldered + 8 Gb DDR4 PC3200, HDD SSD 512GB NVme, Layar 14 Inch, OS Windows 11 Home 64 bit, SN UNA28SD001219015200601
+    12-29092022-081/Acer Aspire 5 Slim A514/LAPTOP/Merk Acer, Processor Core i5 1235U, Type Aspire 5 Slim A514, RAM 8Gb Soldered + 8Gb DDR4 PC 3200, HDD SSD 512GB NVme, Layar 14 Inch, OS Windows 11 Home 64 bit, SN NXK5BSN0012321047F3400
+    12-01012020-082/Dell Latitude E7440/LAPTOP/Merk Dell, Processor Core i5 4310U, Type Latitude E7440, RAM 16GB (8 GB x2 DDR3L), HDD SSD 256GB, Layar 14 Inch, OS Windows 10 Pro 64 bit
+    12-01112022-084/Acer Aspire 5 Slim A514/LAPTOP/Merk Acer, Processor Core i5 1235U, Type Aspire 5 Slim A514, RAM 8Gb Soldered + 8Gb DDR4 PC3200, HDD SSD 512GB NVme, Layar 14 Inch, OS Windows 10 Pro 64 bit, SN NXK5BSN0012320FDA33400
+    12-01122022-085/Acer Aspire 5 Slim A514/LAPTOP/Merk Acer, Processor Core i5 1235U, Type Aspire 5 Slim A514, RAM 8Gb Soldered + 8Gb DDR4 PC3200, HDD SSD 512GB NVme, Layar 14 Inch, OS Windows 10 64 bit, SN NXK5BSN0012320FAF93400
+    12-16122022-086/Macbook Air 2020 Silver/LAPTOP/Merk Apple, Processor Apple Chip M1, Type Macbook Air 2020 Silver, RAM 8GB DDR4, SSD 256GB, Layar 13Inch, VGA -, SN FVFJJ1VEQ6L7
+    12-01012023-087/Acer Aspire 5 Slim A514/LAPTOP/Merk Acer, Processor Core i5 1235U, Type Aspire 5 Slim A514, RAM 8Gb Soldered + 4Gb DDR4 PC3200, HDD SSD 512GB NVme, Layar 14 Inch, OS Windows 11 64 bit, SN NXK5BSN0012330197B3400, microsoft acc devtujuhsembilan@outlook.com
+    12-01012023-088/Macbook Air 2020 Grey/LAPTOP/Merk Apple, Processor Apple Chip M1, Type Macbook Air 2020 Grey, RAM 8GB DDR4, SSD 256GB, Layar 13Inch, VGA -, SN FVFJM9CO1WFV
+    12-27012023-089/Acer Aspire 5 Slim A514/LAPTOP/Merk Acer, Processor Core i5 1235U, Type Aspire 5 Slim A514, RAM 8Gb Soldered + 8GB DDR4 PC3200, HDD SSD 512GB NVme, Layar 14 Inch, OS Windows 11 64 bit, SN NXK5BSN0012330052A3400, Microsoft account devtujuhsembilan01@outlook.com
+    12-09022023-090/Acer Aspire 5 Slim A514/LAPTOP/Merk Acer, Processor Core i5 1235U, Type Aspire 5 Slim A514, RAM 8Gb Soldered + 8GB PC3200, HDD SSD 512GB NVme, Layar 14 Inch, OS Windows 11 64 bit, SN NXK5BSN0012320F8003400, office devtujuhsembilan05@office365id.net
+    12-12022023-091/Acer Aspire 5 Slim A514/LAPTOP/Merk Acer, Processor Core i5 1235U, Type Aspire 5 Slim A514, RAM 8Gb Soldered + DDR4 8GB 3200, HDD SSD 512GB NVme, Layar 14 Inch, OS Windows 11 64 bit, SN , Microsoft account devtujuhsembilan03@outlook.com
+    12-01032023-092/Macbook Air 2020 Silver/LAPTOP/Merk Apple, Processor Apple Chip M1, Type Macbook Air 2020 Silver, RAM 8GB DDR4, SSD 256GB, Layar 13Inch, VGA -, SN FVFJJ232Q6L7
+    15-23082023-001/Lemari Loker Krisbow/CABINET/Lemari Loker Merk Krisbow, Material Besi, 18 Pintu, Warna Kuning Muda
+    15-05092023-002/Lemari Loker Krisbow/CABINET/Lemari Loker, merk Krisbow, material besi, pintu 18, warna kuning muda
+    15-18072023-003/Whiteboard Sakura/WHITEBOARD/Whiteboard, merk Sakura, spek Double Face
+    15-18072023-004/Whiteboard Sakura/WHITEBOARD/Whiteboard, merk Sakura, spek Double Face
+    15-18072023-005/Whiteboard Sakura/WHITEBOARD/Whiteboard, merk Sakura, spek Double Face
+    15-18092025-006/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-007/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-008/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-009/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-010/Meja/MEJA
+    15-18092025-011/Meja/MEJA
+    15-18092025-012/Meja/MEJA
+    `.trim();
+
+    var lines = rawData.split('\n');
+    var nextId = 1;
+
+    for (let line of lines) {
+      let parts = line.split('/');
+      let nomor = parts[0] ? parts[0].trim() : "79 :: Number Undefined";
+      let nama = parts[1] ? parts[1].trim() : "79 :: Name Undefined";
+      let tipe = parts[2] ? parts[2].trim() : "79 :: Type Undefined";
+      let spesifikasi = parts[3] ? parts[3].trim() : "79 :: Detail Undefined";
+
+      dataAset[nextId.toString()] = {
+        nomor: nomor,
+        nama: nama,
+        tipe: tipe,
+        spesifikasi: spesifikasi
+      };
+      nextId++;
+    }
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var id = urlParams.get("id");
+    var tampil = document.getElementById("info-aset");
+
+    if (id in dataAset) {
+      var aset = dataAset[id];
+      tampil.innerHTML = `
+        <p style="animation: zoomIn 1s ease-in;"><strong>Nomor Asset:</strong> ${aset.nomor}</p>
+        <p style="animation: zoomIn 1s ease-in;"><strong>Nama Asset:</strong> ${aset.nama}</p>
+        <p style="animation: zoomIn 1s ease-in;"><strong>Tipe:</strong> ${aset.tipe}</p>
+        <p style="animation: zoomIn 1s ease-in;"><strong>Spesifikasi:</strong> ${aset.spesifikasi}</p>
+      `;
+    } else {
+      tampil.innerHTML = `<p style="color:red; font-weight: 600;">79 :: Oops! Asset not found.</p>`;
+    }
+
+    setTimeout(() => {
+      var loading = tampil.querySelector('.loading');
+      if (loading) loading.remove();
+    }, 2000);
+  </script>
+</body>
+</html>
