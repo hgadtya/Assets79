@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>79 - General Affairs</title>
+  <link rel="icon" href="./ga-logo.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Poppins', sans-serif;
+      padding: 40px;
+      background-color: white;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .geometric-shape { position: absolute; opacity: 0.6; z-index: -1; }
+    .orange-circle { width: 150px; height: 150px; background-color: #ff7300; border-radius: 50%; top: 10%; left: 10%; animation: float 6s ease-in-out infinite; }
+    .blue-triangle { width: 0; height: 0; border-left: 75px solid transparent; border-right: 75px solid transparent; border-bottom: 130px solid #2f81df; top: 60%; right: 15%; animation: rotate 8s linear infinite; }
+    .blue-square { width: 100px; height: 100px; background-color: #4169E1; top: 20%; right: 5%; animation: pulse 4s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0px);} 50% { transform: translateY(-8px);} }
+    @keyframes rotate { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+    @keyframes pulse { 0%,100% { transform: scale(1);} 50% { transform: scale(1.1);} }
+    @keyframes slideInLeft {
+      0% {
+        transform: translateX(-20%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    @keyframes zoomIn {
+        0% {
+          transform: scale(0.7);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    h2 { color: #333; text-align: center; margin-bottom: 20px; }
+    .kotak-aset {
+      border: 2px solid #ddd; padding: 20px; width: 320px;
+      border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: #f9f9f9; transition: transform 0.3s, box-shadow 0.3s;
+      animation: float 5s ease-in-out infinite;
+    }
+    .kotak-aset:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+    p { margin: 10px 0; }
+    .loading { text-align: center; color: #ff7700; font-weight: 600; animation: float 1s linear infinite; }
+    .logo-container { text-align: center; margin-bottom: -10px; animation: slideInLeft 3s ease-in; }
+    .logo-container img { width: 140px; height: auto; max-width: 100%; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="geometric-shape orange-circle"></div>
+  <div class="geometric-shape blue-triangle"></div>
+  <div class="geometric-shape blue-square"></div>
+
+  <div class="logo-container">
+    <img src="./ga-logo.png" alt="Logo GA" />
+  </div>
+  
+  <center>
+    <p style="margin-bottom: 40px; font-weight: 600; max-width: 450px;">Gg. Terasana No.6A, Pasir Kaliki, Kec. Cicendo, Kota Bandung, Jawa Barat 40171</p>
+  </center>
+
+  <h2 style="color: #4169E1;">Asset Identity</h2>
+  <div class="kotak-aset" id="info-aset">
+    <p class="loading">Sedang memuat...</p>
+  </div>
+
+  <script>
+    var dataAset = {
+
+    };
+
+    var rawData = `
+    15-18092025-010//MEJA/
+    15-18092025-011//MEJA/
+    15-18092025-012//MEJA/
+    15-18092025-089//MEJA/
+    15-18092025-090//MEJA/
+    15-18092025-091//MEJA/
+    15-18092025-092//MEJA/
+    15-18092025-093//MEJA/
+    15-18092025-094//MEJA/
+    15-18092025-095//MEJA/
+    15-18092025-096//MEJA/
+    15-18092025-097//MEJA/
+    `.trim();
+
+    var lines = rawData.split('\n');
+    var nextId = 1;
+
+    for (let line of lines) {
+      let parts = line.split('/');
+      let nomor = parts[0] ? parts[0].trim() : "79 :: Number Undefined";
+      let nama = parts[1] ? parts[1].trim() : "79 :: Name Undefined";
+      let tipe = parts[2] ? parts[2].trim() : "79 :: Type Undefined";
+      let spesifikasi = parts[3] ? parts[3].trim() : "79 :: Detail Undefined";
+
+      dataAset[nextId.toString()] = {
+        nomor: nomor,
+        nama: nama,
+        tipe: tipe,
+        spesifikasi: spesifikasi
+      };
+      nextId++;
+    }
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var id = urlParams.get("id");
+    var tampil = document.getElementById("info-aset");
+
+    if (id in dataAset) {
+      var aset = dataAset[id];
+      tampil.innerHTML = `
+        <p style="animation: zoomIn 1s ease-in;"><strong>Nomor Asset:</strong> ${aset.nomor}</p>
+        <p style="animation: zoomIn 1s ease-in;"><strong>Nama Asset:</strong> ${aset.nama}</p>
+        <p style="animation: zoomIn 1s ease-in;"><strong>Tipe:</strong> ${aset.tipe}</p>
+        <p style="animation: zoomIn 1s ease-in;"><strong>Spesifikasi:</strong> ${aset.spesifikasi}</p>
+      `;
+    } else {
+      tampil.innerHTML = `<p style="color:red; font-weight: 600;">79 :: Oops! Asset not found.</p>`;
+    }
+
+    setTimeout(() => {
+      var loading = tampil.querySelector('.loading');
+      if (loading) loading.remove();
+    }, 2000);
+  </script>
+</body>
+</html>

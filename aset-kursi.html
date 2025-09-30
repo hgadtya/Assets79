@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>79 - General Affairs</title>
+  <link rel="icon" href="./ga-logo.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Poppins', sans-serif;
+      padding: 40px;
+      background-color: white;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .geometric-shape { position: absolute; opacity: 0.6; z-index: -1; }
+    .orange-circle { width: 150px; height: 150px; background-color: #ff7300; border-radius: 50%; top: 10%; left: 10%; animation: float 6s ease-in-out infinite; }
+    .blue-triangle { width: 0; height: 0; border-left: 75px solid transparent; border-right: 75px solid transparent; border-bottom: 130px solid #2f81df; top: 60%; right: 15%; animation: rotate 8s linear infinite; }
+    .blue-square { width: 100px; height: 100px; background-color: #4169E1; top: 20%; right: 5%; animation: pulse 4s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0px);} 50% { transform: translateY(-8px);} }
+    @keyframes rotate { 0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }
+    @keyframes pulse { 0%,100% { transform: scale(1);} 50% { transform: scale(1.1);} }
+    @keyframes slideInLeft {
+      0% {
+        transform: translateX(-20%);
+        opacity: 0;
+      }
+      100% {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    @keyframes zoomIn {
+        0% {
+          transform: scale(0.7);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    h2 { color: #333; text-align: center; margin-bottom: 20px; }
+    .kotak-aset {
+      border: 2px solid #ddd; padding: 20px; width: 320px;
+      border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: #f9f9f9; transition: transform 0.3s, box-shadow 0.3s;
+      animation: float 5s ease-in-out infinite;
+    }
+    .kotak-aset:hover { transform: translateY(-5px); box-shadow: 0 8px 16px rgba(0,0,0,0.2); }
+    p { margin: 10px 0; }
+    .loading { text-align: center; color: #ff7700; font-weight: 600; animation: float 1s linear infinite; }
+    .logo-container { text-align: center; margin-bottom: -10px; animation: slideInLeft 3s ease-in; }
+    .logo-container img { width: 140px; height: auto; max-width: 100%; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="geometric-shape orange-circle"></div>
+  <div class="geometric-shape blue-triangle"></div>
+  <div class="geometric-shape blue-square"></div>
+
+  <div class="logo-container">
+    <img src="./ga-logo.png" alt="Logo GA" />
+  </div>
+  
+  <center>
+    <p style="margin-bottom: 40px; font-weight: 600; max-width: 450px;">Gg. Terasana No.6A, Pasir Kaliki, Kec. Cicendo, Kota Bandung, Jawa Barat 40171</p>
+  </center>
+
+  <h2 style="color: #4169E1;">Asset Identity</h2>
+  <div class="kotak-aset" id="info-aset">
+    <p class="loading">Please wait...</p>
+  </div>
+
+  <script>
+    var dataAset = {
+
+    };
+
+    var rawData = `
+    15-18092025-006/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-007/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-008/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-009/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-013/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-014/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-015/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-016/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-017/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-018/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-019/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-020/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-021/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-022/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-023/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-024/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-025/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-026/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-027/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-028/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-029/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-030/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-031/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-032/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-033/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-034/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-035/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-036/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-037/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-038/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-039/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-040/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-041/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-042/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-043/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-044/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-045/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-046/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-047/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-048/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-049/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-050/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-051/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-052/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-053/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-054/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-055/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-056/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-057/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-058/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-059/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-060/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-061/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-062/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-063/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-064/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-065/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-066/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-067/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-068/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-069/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-070/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-071/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-072/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-073/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-074/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-075/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-076/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-077/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-078/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-079/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-080/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-081/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-082/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-083/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-084/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-085/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-086/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-087/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    15-18092025-088/Kursi/KURSI/Kursi Biru, Merk Alfapro
+    `.trim();
+
+    var lines = rawData.split('\n');
+    var nextId = 1;
+
+    for (let line of lines) {
+      let parts = line.split('/');
+      let nomor = parts[0] ? parts[0].trim() : "79 :: Number Undefined";
+      let nama = parts[1] ? parts[1].trim() : "79 :: Name Undefined";
+      let tipe = parts[2] ? parts[2].trim() : "79 :: Type Undefined";
+      let spesifikasi = parts[3] ? parts[3].trim() : "79 :: Detail Undefined";
+
+      dataAset[nextId.toString()] = {
+        nomor: nomor,
+        nama: nama,
+        tipe: tipe,
+        spesifikasi: spesifikasi
+      };
+      nextId++;
+    }
+
+    var urlParams = new URLSearchParams(window.location.search);
+    var id = urlParams.get("id");
+    var tampil = document.getElementById("info-aset");
+
+    if (id in dataAset) {
+      var aset = dataAset[id];
+      tampil.innerHTML = `
+        <p style="animation: zoomIn 1s ease-in;"><strong>Nomor Asset:</strong> ${aset.nomor}</p>
+        <p style="animation: zoomIn 1s ease-in;"><strong>Nama Asset:</strong> ${aset.nama}</p>
+        <p style="animation: zoomIn 1s ease-in;"><strong>Tipe:</strong> ${aset.tipe}</p>
+        <p style="animation: zoomIn 1s ease-in;"><strong>Spesifikasi:</strong> ${aset.spesifikasi}</p>
+      `;
+    } else {
+      tampil.innerHTML = `<p style="color:red; font-weight: 600;">79 :: Oops! Asset not found.</p>`;
+    }
+
+    setTimeout(() => {
+      var loading = tampil.querySelector('.loading');
+      if (loading) loading.remove();
+    }, 2000);
+  </script>
+</body>
+</html>
